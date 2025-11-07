@@ -30,7 +30,7 @@ def main_pipeline(image_path, seg_model, class_model, device,
     start_time = time.time()
     
     # Load image
-    print("\n📸 Loading image...")
+    print("\n Loading image...")
     image = cv2.imread(str(image_path))
     if image is None:
         raise ValueError(f"Failed to load image: {image_path}")
@@ -64,6 +64,15 @@ def main_pipeline(image_path, seg_model, class_model, device,
         save_pipeline_results(pipeline_result, image_path, output_dir)
     
     # Print summary
-    print_pipeline_summary(pipeline_result)
+    try:
+        print_pipeline_summary(pipeline_result)
+    except Exception as e:
+        print(f" Warning: Could not print detailed summary: {e}")
+        # Fallback summary
+        print(f"\n Processing Time: {total_time:.2f} seconds")
+        print(f" Result: {result['class_name']}")
+        print(f"Confidence: {result['confidence']*100:.2f}%")
+    
+    print("="*60)
     
     return pipeline_result

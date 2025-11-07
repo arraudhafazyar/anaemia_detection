@@ -1,8 +1,8 @@
 import os
 from config import config
 from models import load_classification_model, load_segmentation_model
-from pipeline import main_pipeline 
-from utils import visualize_pipeline, print_pipeline_summary, capture_conjunctiva
+from pipeline import main_pipeline, capture_conjunctiva
+from utils import visualize_pipeline, print_pipeline_summary
 
 
 def main():
@@ -11,12 +11,21 @@ def main():
     print("RASPBERRY PI - ANEMIA DETECTION SYSTEM")
     print(" "*30)
     
-    image_path = capture_conjunctiva(preview=True)
-    if not image_path or not os.path.exists(image_path):
-        print("❌ Tidak ada gambar yang diambil.")
+    image_path = capture_conjunctiva(
+        save_dir="patient_images",      # ← Folder untuk simpan gambar pasien
+        show_preview=True,               # ← Live preview (karena pakai monitor)
+        show_captured=True               # ← Show hasil capture untuk review
+    )
+    
+    # Validasi hasil capture
+    if not image_path:
+        print("\n Tidak ada gambar yang diambil.")
+        print("   Capture dibatalkan atau gagal.")
         return
-
-    print(f"\n🖼️ Gambar terakhir: {image_path}")
+    
+    
+    print(f"\n✅ Gambar berhasil dicapture: {image_path}")
+    print(f"   Size: {os.path.getsize(image_path) / 1024:.1f} KB")
 
     # Check if models exist
     if not os.path.exists(config.SEGMENTATION_MODEL):
