@@ -18,7 +18,7 @@ class Config:
     CLASS_NAMES = ['Anemia', 'Normal']
     
     # Camera settings (optional, for PiCamera)
-    CAMERA_RESOLUTION = (1920, 1080)  # ← RESOLUSI CAPTURE (Full HD)
+    CAMERA_RESOLUTION = (640, 480)  # ← RESOLUSI CAPTURE (Full HD)
     USE_PICAMERA = True                # ← FLAG: Pakai PiCamera2 library
     CAMERA_FRAMERATE = 30
 
