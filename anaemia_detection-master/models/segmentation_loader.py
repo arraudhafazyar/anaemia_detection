@@ -19,7 +19,7 @@ def load_segmentation_model(model_path, device):
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model not found: {model_path}")
     
-    # ✅ LANGSUNG buat model SMP (no wrapper!)
+    # ✅ LANGSUNG buat model SMP
     model = smp.Linknet(
         encoder_name='mobilenet_v2',
         encoder_weights=None,  # Will load from checkpoint

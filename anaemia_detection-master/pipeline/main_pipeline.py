@@ -1,12 +1,12 @@
 import time 
 import cv2
 from .segmentation import segment_conjunctiva
-from .crop import crop_conjunctiva
+from .crop import extract_conjunctiva
 from .classification import classify_anemia
 from utils.save_results import save_pipeline_results
 from utils.visualization import print_pipeline_summary, visualize_pipeline
 
-def main_pipeline(image_path, seg_model, class_model, device, 
+def main_pipeline(image_path, seg_model, class_model, device, threshold=0.5,
                                 save_results=False, output_dir="results"):
     """
     Complete pipeline: Segmentation → Crop → Classification
@@ -37,10 +37,15 @@ def main_pipeline(image_path, seg_model, class_model, device,
     print(f" Image loaded: {image.shape}")
     
     # Step 1: Segment conjunctiva
-    mask, mask_overlay = segment_conjunctiva(image, seg_model, device)
+    mask, mask_overlay = segment_conjunctiva(image, seg_model, device,
+        encoder_name='mobilenet_v2',
+        encoder_weights='imagenet',
+        threshold=threshold,
+        smooth=True
+    )
     
     # Step 2: Crop conjunctiva
-    cropped, bbox = crop_conjunctiva(image, mask)
+    cropped = extract_conjunctiva(image, mask, background='black')
     
     # Step 3: Classify anemia
     result = classify_anemia(cropped, class_model, device)
@@ -54,7 +59,6 @@ def main_pipeline(image_path, seg_model, class_model, device,
         'mask': mask,
         'mask_overlay': mask_overlay,
         'cropped': cropped,
-        'bbox': bbox,
         'classification': result,
         'processing_time': total_time
     }

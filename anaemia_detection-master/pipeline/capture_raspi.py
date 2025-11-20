@@ -21,11 +21,11 @@ from pathlib import Path
 from datetime import datetime
 import cv2
 
-# 🔧 FIX 2: Disable OpenCV logging 🔧
+# FIX 2: Disable OpenCV logging 
 cv2.setLogLevel(0)
 
-# 🔧 FIX 3: Manual override mode 🔧
-FORCE_VNC_MODE = True  # True=VNC | False=Monitor | None=Auto-detect
+#  FIX 3: Manual override mode 
+FORCE_VNC_MODE = True # True=VNC | False=Monitor | None=Auto-detect
 
 
 def is_vnc_mode():
