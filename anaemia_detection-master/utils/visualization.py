@@ -5,10 +5,6 @@ def print_pipeline_summary(result):
     """Print pipeline summary"""
     classification = result['classification']
     
-    print("\n" + "="*60)
-    print("PIPELINE RESULTS")
-    print("="*60)
-    
     print(f"\n Processing Time: {result['processing_time']:.2f} seconds")
     
     print(f"\n FINAL PREDICTION:")
@@ -21,26 +17,21 @@ def print_pipeline_summary(result):
     
     # Confidence warning
     if classification['confidence'] < config.CLASS_THRESHOLD:
-        print(f"\n?? WARNING: Low confidence (<{config.CLASS_THRESHOLD*100:.0f}%)")
-        print(f"   Manual review recommended")
+        print(f"\n WARNING: Low confidence (<{config.CLASS_THRESHOLD*100:.0f}%)")
     
     # Interpretation
-    print(f"\n?? Interpretation:")
+    print(f"\n Interpretation:")
     if classification['class_name'] == 'Anemia':
-        print(f"   ?? Patient shows signs of ANEMIA")
-        print(f"   ? Recommend further medical examination")
-        print(f"   ? Check hemoglobin levels")
+        print(f"    Patient shows signs of ANEMIA")
+        print(f"    Recommend further medical examination")
     else:
-        print(f"   ? Patient appears NORMAL")
-        print(f"   ? No signs of anemia detected")
-        print(f"   ? Routine checkup recommended")
+        print(f"    Patient appears NORMAL")
+        print(f"    No signs of anemia detected")
     
     # Show patient folder if exists (NEW!)
     if result.get('patient_folder'):
-        print(f"\n?? Results saved in: {result['patient_folder']}/")
+        print(f"\n Results saved in: {result['patient_folder']}/")
     
-    print("="*60 + "\n")
-
 def visualize_pipeline(result, show=True, save_path=None):
     """Visualize complete pipeline"""
     import matplotlib.pyplot as plt
@@ -96,7 +87,7 @@ def visualize_pipeline(result, show=True, save_path=None):
     
     if save_path:
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
-        print(f"? Visualization saved: {save_path}")
+        print(f" Visualization saved: {save_path}")
     
     if show:
         plt.show()

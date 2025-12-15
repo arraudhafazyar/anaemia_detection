@@ -33,10 +33,10 @@ def load_segmentation_model(model_path, device):
     
     # Debug: Print checkpoint keys
     if 'model_state_dict' in checkpoint:
-        print(f"✅ Checkpoint contains 'model_state_dict'")
+        print(f" Checkpoint contains 'model_state_dict'")
         state_dict = checkpoint['model_state_dict']
     else:
-        print("⚠️  Checkpoint is raw state_dict (no 'model_state_dict' key)")
+        print("Checkpoint is raw state_dict (no 'model_state_dict' key)")
         state_dict = checkpoint
     
     # Load weights dengan strict=True untuk detect issues
@@ -57,7 +57,7 @@ def load_segmentation_model(model_path, device):
                 new_state_dict[key] = value
         
         model.load_state_dict(new_state_dict, strict=True)
-        print("✅ Model loaded after key fixing")
+        print("Model loaded after key fixing")
     
     # Set to eval mode
     model.eval()
@@ -71,6 +71,6 @@ def load_segmentation_model(model_path, device):
     if 'epoch' in checkpoint:
         print(f"   Training Epoch: {checkpoint['epoch']}")
     
-    print("✅ Segmentation model ready!\n")
+    print("Segmentation model ready!\n")
     
     return model

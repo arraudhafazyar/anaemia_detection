@@ -10,7 +10,7 @@ menggunakan Raspberry Pi Camera v3 (Picamera2) dengan AUTOFOCUS.
 - AUTOFOCUS ENABLED untuk hasil tajam!
 """
 
-# 🔧 FIX 1: Suppress warnings SEBELUM import cv2 🔧
+# FIX 1: Suppress warnings SEBELUM import cv2 
 import os
 os.environ['OPENCV_IO_ENABLE_OPENEXR'] = '0'
 os.environ['OPENCV_VIDEOIO_DEBUG'] = '0'
@@ -75,11 +75,6 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
     vnc_mode = is_vnc_mode()
     mode_name = "VNC (OpenCV)" if vnc_mode else "MONITOR FISIK (QTGL)"
     
-    print("="*60)
-    print("📸 ANEMIA DETECTION - CAPTURE KONJUNGTIVA")
-    print(f"🖥️ MODE: {mode_name}")
-    print("="*60)
-    
     # Setup kamera
     try:
         picam2 = Picamera2()
@@ -98,15 +93,15 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
             try:
                 picam2.start_preview(Preview.QTGL)
                 qtgl_active = True
-                print("✅ Preview: QTGL")
+                print(" Preview: QTGL")
             except Exception as e:
-                print(f"⚠️ QTGL failed: {e}")
+                print(f" QTGL failed: {e}")
                 vnc_mode = True
         
         if show_preview and vnc_mode:
-            print("✅ Preview: OpenCV")
+            print(" Preview: OpenCV")
         
-        # 🔍🔍🔍 ENABLE AUTOFOCUS 🔍🔍🔍
+        # ENABLE AUTOFOCUS 
         picam2.start()
         
         print("🔍 Activating autofocus...")
@@ -116,27 +111,21 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
         })
         
         sleep(2)  # Kasih waktu autofocus bekerja
-        # 🔍🔍🔍 AKHIR AUTOFOCUS 🔍🔍🔍
+        # AKHIR AUTOFOCUS
         
-        print("\n✅ Camera ready with AUTOFOCUS!")
-        print("   🔍 Autofocus: CONTINUOUS MODE")
-        print("\n📋 INSTRUKSI:")
-        print("   1. Arahkan kamera ke KONJUNGTIVA mata pasien")
-        print("      (Bagian DALAM kelopak mata BAWAH yang berwarna merah/pink)")
-        print("   2. Pastikan pencahayaan cukup terang")
-        print("   3. Minta pasien membuka mata lebar dan lihat ke atas")
-        print("   4. Tarik kelopak mata bawah dengan lembut")
-        print("   5. Fokuskan kamera pada area konjungtiva")
-        print("   6. Tunggu beberapa detik untuk autofocus bekerja")
+        print("\n Camera ready with AUTOFOCUS")
+        print("\n INSTRUKSI:")
+        print("   Arahkan kamera ke KONJUNGTIVA mata pasien")
+        print("   (Bagian DALAM kelopak mata BAWAH yang berwarna merah/pink)")
         
         if show_preview:
             if vnc_mode:
-                print("\n⌨️  [VNC] SPACE=capture | Q=quit\n")
+                print("\n  [VNC] SPACE=capture | Q=quit\n")
             else:
-                print("\n⌨️  [MONITOR] ENTER=capture\n")
+                print("\n️  [MONITOR] ENTER=capture\n")
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return None
     
     # Main capture loop
@@ -147,14 +136,14 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
     try:
         while True:
             print(f"\n{'-'*60}")
-            print(f"🎯 Attempt #{attempt}")
+            print(f" Attempt #{attempt}")
             print(f"{'-'*60}")
             
             # CONDITIONAL PREVIEW
             if show_preview and vnc_mode:
                 # VNC MODE - OpenCV Preview
-                print("\n👁️  Live Preview (OpenCV)...")
-                print("   🔍 Arahkan kamera, tunggu fokus, lalu tekan SPACE")
+                print("\n Live Preview (OpenCV)...")
+                print("Arahkan kamera, tunggu fokus, lalu tekan SPACE")
                 
                 preview_window = f"Live Preview #{attempt} - SPACE=capture, Q=quit"
                 
@@ -188,10 +177,10 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                     
                     if key == ord(' '):
                         cv2.destroyWindow(preview_window)
-                        print("⏸️ Preview frozen!")
+                        print(" Preview frozen!")
                         break
                     elif key == ord('q') or key == ord('Q'):
-                        print("\n🚪 Quit")
+                        print("\n Quit")
                         cv2.destroyAllWindows()
                         picam2.stop()
                         if qtgl_active:
@@ -202,14 +191,14 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                         return None
             else:
                 # MONITOR MODE - Input biasa
-                input("⏸️ Tekan ENTER untuk capture... ")
+                input("Tekan ENTER untuk capture... ")
             
             # Countdown
-            print("\n⏳  Bersiap...", end=' ', flush=True)
+            print("\n Bersiap...", end=' ', flush=True)
             for t in [3, 2, 1]:
                 print(f"{t}...", end=' ', flush=True)
                 sleep(1)
-            print("📸 SNAP!\n")
+            print("SNAP!\n")
             
             # Generate filename
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -219,9 +208,9 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
             # Capture image
             try:
                 picam2.capture_file(temp_filepath)
-                print(f"✅ Gambar dicapture")
+                print(f"Gambar dicapture")
             except Exception as e:
-                print(f"❌ Gagal: {e}")
+                print(f" Gagal: {e}")
                 retry = input("\n   Coba lagi? (y/n): ").lower().strip()
                 if retry != 'y':
                     break
@@ -245,7 +234,7 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                         cv2.imshow(review_window, display_img)
                         
                         # Tunggu keypress dengan loop + timeout
-                        print("\n👁️  Review window terbuka")
+                        print("\n Review window terbuka")
                         print("   Tekan ANY KEY untuk lanjut...")
                         
                         key_pressed = False
@@ -256,27 +245,21 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                             key = cv2.waitKey(100) & 0xFF
                             if key != 255:
                                 key_pressed = True
-                                print("   ✅ Key detected!")
+                                print("  Key detected!")
                             timeout_counter += 1
                             cv2.imshow(review_window, display_img)
                         
                         if not key_pressed:
-                            print("   ⏰ Timeout 30s, auto-close")
+                            print(" Timeout 30s, auto-close")
                         
                         cv2.destroyAllWindows()
-                        print("   ✅ Review done")
+                        print("   Review done")
                 
                 except Exception as e:
-                    print(f"⚠️  Cannot display: {e}")
+                    print(f"  Cannot display: {e}")
                     print(f"   File: {temp_filepath}")
             
-            # KONFIRMASI KUALITAS
-            print("\n📋 CHECKLIST:")
-            print("   ✓ Konjungtiva JELAS?")
-            print("   ✓ Pencahayaan CUKUP?")
-            print("   ✓ Tidak BLUR?")
-            
-            decision = input("\n❓ Bagus? (y/n/c): ").lower().strip()
+            decision = input("\n Bagus? (y/n): ").lower().strip()
             
             if decision == 'y':
                 final_filename = f"conjunctiva_{timestamp}.jpg"
@@ -284,20 +267,20 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                 os.rename(temp_filepath, final_filepath)
                 
                 cv2.destroyAllWindows()
-                print("\n✅ DITERIMA!")
-                print(f"   💾 {final_filepath}")
-                print(f"   📦 Size: {os.path.getsize(final_filepath) / 1024:.1f} KB")
+                print("\n  DITERIMA!")
+                print(f"   {final_filepath}")
+                print(f"   Size: {os.path.getsize(final_filepath) / 1024:.1f} KB")
                 return final_filepath
             
             elif decision == 'n':
-                print("❌ Ditolak")
+                print(" Ditolak")
                 cv2.destroyAllWindows()
                 try:
                     os.remove(temp_filepath)
                 except:
                     pass
                 
-                retry = input("\n🔄 Capture ulang? (y/n): ").lower().strip()
+                retry = input("\n Capture ulang? (y/n): ").lower().strip()
                 if retry == 'y':
                     attempt += 1
                     continue
@@ -305,7 +288,7 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                     return None
             
             else:
-                print("\n🚫 Cancel")
+                print("\nCancel")
                 cv2.destroyAllWindows()
                 try:
                     os.remove(temp_filepath)
@@ -314,7 +297,7 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
                 return None
     
     except KeyboardInterrupt:
-        print("\n\n⚠️ Ctrl+C")
+        print("\n\n Ctrl+C")
         cv2.destroyAllWindows()
         return None
     
@@ -334,4 +317,4 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
         except:
             pass
         
-        print("📴 Camera off\n")
+        print(" Camera off\n")

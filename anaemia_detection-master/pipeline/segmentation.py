@@ -19,7 +19,7 @@ def refine_mask_edges(mask, feather_amount=3):
     mask_blurred = cv2.GaussianBlur(mask_eroded, (feather_amount*2 + 1, feather_amount*2 + 1), 0)
     return mask_blurred.astype(np.float32) / 255.0
 
-# === FUNGSI UTAMA (GANTI SELURUHNYA DENGAN INI) ===
+# === FUNGSI UTAMA ===
 def segment_conjunctiva(image, model, device, 
                         encoder_name='mobilenet_v2', encoder_weights='imagenet',
                         threshold=0.5, smooth=True):

@@ -11,7 +11,7 @@ def crop_conjunctiva(image, mask, padding=20):
     """
     Crop conjunctiva - EXACT line 237-274 inference.py
     """
-    print("\n✂️  Step 2: Cropping conjunctiva...")
+    print("\n  Step 2: Cropping conjunctiva...")
     
     # Line 248: Find non-zero pixels in mask
     mask_binary = (mask > 0.5).astype(np.uint8)
@@ -20,7 +20,7 @@ def crop_conjunctiva(image, mask, padding=20):
     contours, _ = cv2.findContours(mask_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     if len(contours) == 0:
-        raise ValueError("❌ No conjunctiva detected!")
+        raise ValueError("No conjunctiva detected!")
     
     # Line 258: Get bounding box of all contours
     x_min, y_min = image.shape[1], image.shape[0]
@@ -44,7 +44,7 @@ def crop_conjunctiva(image, mask, padding=20):
     
     bbox = (x_min, y_min, x_max - x_min, y_max - y_min)
     
-    print(f"✅ Cropped: {cropped_image.shape}")
+    print(f"Cropped: {cropped_image.shape}")
     
     return cropped_image, bbox
 
@@ -53,13 +53,13 @@ def extract_conjunctiva(image, mask, background='black'):
     """
     Extract conjunctiva - EXACT line 277-315 inference.py
     """
-    # Line 287: Crop ke area segmented
+    #Crop ke area segmented
     cropped_img, cropped_mask, bbox = crop_segmented_region(image, mask)
     
     if cropped_img is None:
         return None
     
-    # Line 291: Create output image
+    #Create output image
     if background == 'white':
         output = np.ones_like(cropped_img) * 255
     elif background == 'black':
@@ -69,7 +69,7 @@ def extract_conjunctiva(image, mask, background='black'):
     else:
         output = np.ones_like(cropped_img) * 255
     
-    # Line 301: Copy only segmented area
+    #Copy only segmented area
     mask_3d = np.stack([cropped_mask] * 3, axis=2)
     
     if background == 'transparent':

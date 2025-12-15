@@ -23,7 +23,7 @@ def main_pipeline(image_path, seg_model, class_model, device, threshold=0.5,
         dict: Complete results with all intermediate outputs
     """
     print("\n" + "="*60)
-    print(" ANEMIA DETECTION PIPELINE")
+    print(" ANEMIA DETECTION AND CLASSIFICATION PIPELINE")
     print("="*60)
     print(f"Input image: {image_path}")
     
