@@ -104,7 +104,7 @@ def capture_conjunctiva(save_dir="captures", show_preview=True, show_captured=Tr
         # ENABLE AUTOFOCUS 
         picam2.start()
         
-        print("🔍 Activating autofocus...")
+        print(" Activating autofocus...")
         picam2.set_controls({
             "AfMode": 2,      # 0=Manual, 1=Auto, 2=Continuous
             "AfTrigger": 0    # Start autofocus

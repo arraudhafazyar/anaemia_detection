@@ -204,7 +204,7 @@ class HeartRateMonitor:
 
         # SpO2 calculation using empirical formula
         # This is a simplified calibration - adjust coefficients for better accuracy
-        spo2 = 110.0 - 25.0 * r
+        spo2 = 99.10 - 4.57 * r
 
         # Clamp to valid range
         if 70 <= spo2 <= 100:
